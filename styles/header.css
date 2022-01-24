@@ -1,0 +1,6 @@
+.navbar-nav { 
+    flex-direction: row;
+}
+.navbar-expand-lg {    
+    justify-content: center;
+}
