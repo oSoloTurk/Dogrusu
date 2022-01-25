@@ -19,7 +19,7 @@
     <meta charset="utf-8" />
 
     <?php require_once("styles.php"); ?>
-    <link rel="stylesheet" href="styles/play.css"> 
+    <link rel="stylesheet" href="styles/play.css">
 </head>
 
 <body>
@@ -38,7 +38,7 @@
             </div>
             <hr />
             <div id="meanings"></div>
-            <hr/>
+            <hr />
             <div class="container">
                 <form action="" method="post">
                     <ul class="list-group">
@@ -49,6 +49,11 @@
                         ?>
                     </ul>
                 </form>
+            </div>
+
+            <div class="row text-center">
+                <button class="btn btn-warning">Pas</button>
+                <button class="btn btn-success">Cevapla</button>
             </div>
         </div>
     </article>
