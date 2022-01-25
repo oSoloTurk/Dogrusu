@@ -1,0 +1,9 @@
+
+.clickable {
+    cursor:pointer; 
+}
+
+a.pretty {
+    color:#000000 !important;
+    text-decoration:none;
+}
