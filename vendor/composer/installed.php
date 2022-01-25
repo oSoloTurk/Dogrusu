@@ -19,6 +19,15 @@
             'reference' => NULL,
             'dev_requirement' => false,
         ),
+        'alcaeus/mongo-php-adapter' => array(
+            'pretty_version' => '1.0.9',
+            'version' => '1.0.9.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../alcaeus/mongo-php-adapter',
+            'aliases' => array(),
+            'reference' => 'fea3f8333c7b22dde97d7dbe8a82528fc5c27992',
+            'dev_requirement' => false,
+        ),
         'jean85/pretty-package-versions' => array(
             'pretty_version' => '2.0.5',
             'version' => '2.0.5.0',
@@ -35,6 +44,17 @@
             'install_path' => __DIR__ . '/../mongodb/mongodb',
             'aliases' => array(),
             'reference' => 'e4aa59ab15b6fe00a0e56b6772f8b515a0f01bf0',
+            'dev_requirement' => false,
+        ),
+        'purekid/mongodm' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../purekid/mongodm',
+            'aliases' => array(
+                0 => '9999999-dev',
+            ),
+            'reference' => '108f2e4de5e14eb07c1e2b097a2233b62b33f672',
             'dev_requirement' => false,
         ),
         'symfony/polyfill-php80' => array(

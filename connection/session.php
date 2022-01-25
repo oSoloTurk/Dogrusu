@@ -1,6 +1,6 @@
 <?php 
   session_start();  
-  include("connection/connection.php");
+
   
   if(isset($_SESSION['token']) && isset($_SESSION['id'])){
     $token = $_SESSION['token'];
