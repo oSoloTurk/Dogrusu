@@ -1,6 +1,6 @@
 <?php 
   session_start();  
-
+  require_once("connection.php");
   
   if(isset($_SESSION['token']) && isset($_SESSION['id'])){
     $token = $_SESSION['token'];

@@ -1,23 +1,49 @@
 <?php 
-    use Purekid\Mongodm\Model;
 
-    class User extends Model {
-        public static $config = "indeed";
-        public static $collection = "user";
+    class User {
+        public $id;
+        var $name;
+        var $surname;
+        var $email;
+        var $email_status;
+        var $password_hash;
+        var $lockout;
+        var $normalized_username;
+        var $normalized_email;
+        
+        function __construct($arr) {
+            $this->name = $arr['name'] ?? null;
+            $this->surname = $arr['surname'] ?? null;
+            $this->email = $arr['email'] ?? null;
+            $this->email_status = $arr['email_status'] ?? null;
+            $this->password_hash = $arr['password_hash'] ?? null;
+            $this->lockout = $arr['lockout'] ?? null;
+            $this->normalized_username = $arr['normalized_username'] ?? null;
+            $this->normalized_email = $arr['normalized_email'] ?? null;
+        }
 
-        protected static $attrs = array(
-            
-            '_id' => array('type'=>'objectid'),
-            'name' => array('type'=>'string'),
-            'surname' => array('type'=>'string'),
-            'email' => array('type'=>'string'),
-            'email_status' => array('type'=>'string'),
-            'password_hash' => array('type'=>'string'),
-            'lockout' => array('type'=>'date'),
-            'normalized_username' => array('type'=>'string'),
-            'normalized_email' => array('type'=>'string')
-            
-        );
+        function toJSON(){
+            $arr = [];
+            if($this->id != null) 
+                $arr["_id"]= $this->id;
+            if($this->name != null) 
+                $arr["name"] = $this->name;
+            if($this->surname != null) 
+                $arr["surname"] = $this->surname;
+            if($this->email != null) 
+                $arr["email"] = $this->email;
+            if($this->email_status != null) 
+                $arr["email_status"] = $this->email_status;
+            if($this->password_hash != null) 
+                $arr["password_hash"] = $this->password_hash;
+            if($this->lockout != null) 
+                $arr["lockout"] = $this->lockout;
+            if($this->normalized_username != null) 
+                $arr["normalized_username"] = $this->normalized_username;
+            if($this->normalized_email != null) 
+                $arr["normalized_email"] = $this->normalized_email;
+            return $arr;
+        }
     }
 
 ?>

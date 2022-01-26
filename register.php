@@ -16,31 +16,26 @@ include("connection/session.php");
 
 <body>
     <?php 
-  require_once("header.php");
-  if (isset($_POST['submit'])) {
-    $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
-    $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
-    //$data = executeQuery($GLOBALS['SQL_COMMANDS']['SELECT_USER_WITH_EMAIL_AND_PASSWORD'], "ss", $mail, $pwd);
-    
-    if ($data->num_rows == 1) {
-      $userData = mysqli_fetch_array($data);
-      $access_hash = hash('sha256', $mail);
+        require_once("header.php");
 
-      $_SESSION['token'] = $access_hash;
-      $_SESSION['id'] = $userData['id'];
-      $_SESSION['username'] = $userData['username'];
-      
-      //$insert = executeQuery($GLOBALS['SQL_COMMANDS']['INSERT_ACCESS_TOKEN'], "iss", $userData['id'], $access_hash, $access_hash);
+        require_once("models/User.php");
+        if (isset($_POST['register'])) {
 
-      if (isset($_POST['remember']) && (($_POST['remember'] == 1) || ($_POST['remember'] == 'on'))) {
-        setcookie("token", $access_hash, time() + 3600 * 24 * 365, '/');
-        setcookie("id", $userData['id'], time() + 3600 * 24 * 365, '/');
-      }
-      sendToPage("index.php?msg=logged");
-    } else {
-      sendToPage("login.php?msg=wrong_input");
-    }
-  } ?>
+            $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
+            $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
+            
+            $user = new User($_POST);
+            $userAsJson = $user->toJSON();
+            $alreadyExist = $db->users->findOne($userAsJson); 
+            
+            if($alreadyExist == null ){
+                $data = $db->users->insertOne($userAsJson);
+                sendToPage("login.php?msg=success-registered");
+            } else {
+                sendToPage("register.php?msg=already-registered");
+            }
+        } 
+  ?>
 
     <article>
         <div class="container-md row">
@@ -86,7 +81,7 @@ include("connection/session.php");
                         </div>
                         <hr />
                         <div class="row justify-content-center">
-                            <button class="btn btn-outline-primary" type="submit">Kayıt Ol</button>
+                            <button class="btn btn-outline-primary" name="register" type="submit">Kayıt Ol</button>
                         </div>
                         <hr />
                         <p class="text-justify text-center">

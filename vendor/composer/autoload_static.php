@@ -4,22 +4,17 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12
+class ComposerStaticInitfda9caf64b0c5d9f129b7bb18bb704c5
 {
     public static $files = array (
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '3a37ebac017bc098e9a86b35401e7a68' => __DIR__ . '/..' . '/mongodb/mongodb/src/functions.php',
-        '06dd8487319ccd8403765f5b8c9f2d61' => __DIR__ . '/..' . '/alcaeus/mongo-php-adapter/lib/Mongo/functions.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
-        ),
-        'P' => 
-        array (
-            'Purekid\\Mongodm\\' => 16,
         ),
         'M' => 
         array (
@@ -29,20 +24,12 @@ class ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12
         array (
             'Jean85\\' => 7,
         ),
-        'A' => 
-        array (
-            'Alcaeus\\MongoDbAdapter\\' => 23,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'Purekid\\Mongodm\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/purekid/mongodm/src',
         ),
         'MongoDB\\' => 
         array (
@@ -51,20 +38,6 @@ class ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12
         'Jean85\\' => 
         array (
             0 => __DIR__ . '/..' . '/jean85/pretty-package-versions/src',
-        ),
-        'Alcaeus\\MongoDbAdapter\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/alcaeus/mongo-php-adapter/lib/Alcaeus/MongoDbAdapter',
-        ),
-    );
-
-    public static $prefixesPsr0 = array (
-        'M' => 
-        array (
-            'Mongo' => 
-            array (
-                0 => __DIR__ . '/..' . '/alcaeus/mongo-php-adapter/lib/Mongo',
-            ),
         ),
     );
 
@@ -79,10 +52,9 @@ class ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit3c655ce1e63ed20da6c5770fb490fc12::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitfda9caf64b0c5d9f129b7bb18bb704c5::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitfda9caf64b0c5d9f129b7bb18bb704c5::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitfda9caf64b0c5d9f129b7bb18bb704c5::$classMap;
 
         }, null, ClassLoader::class);
     }

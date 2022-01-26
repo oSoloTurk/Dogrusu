@@ -7,8 +7,6 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
-    'Purekid\\Mongodm\\' => array($vendorDir . '/purekid/mongodm/src'),
     'MongoDB\\' => array($vendorDir . '/mongodb/mongodb/src'),
     'Jean85\\' => array($vendorDir . '/jean85/pretty-package-versions/src'),
-    'Alcaeus\\MongoDbAdapter\\' => array($vendorDir . '/alcaeus/mongo-php-adapter/lib/Alcaeus/MongoDbAdapter'),
 );

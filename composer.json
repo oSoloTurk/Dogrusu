@@ -1,6 +1,5 @@
 {
     "require": {
-        "mongodb/mongodb": "^1.11",
-        "purekid/mongodm": "dev-master"
+        "mongodb/mongodb": "^1.11"
     }
 }
