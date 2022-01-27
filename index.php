@@ -8,9 +8,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="stylesheet" href="lib/bootstrap.min.css">
-  <link rel="stylesheet" href="styles/index.css" />
-  <link rel="stylesheet" href="styles/theme.css">
+  <?php require_once("styles.php"); ?>
 </head>
 
 <body>
@@ -18,9 +16,8 @@
   <?php 
   require_once("header.php");
 
-  //body
-
   ?>
+  index
 
   <?php include("footer.php"); ?>
   <?php include("scripts.php"); ?>

@@ -1,5 +1,6 @@
 <?php 
 
+<<<<<<< Updated upstream
     class User {
         public $id;
         var $name;
@@ -22,6 +23,32 @@
             $this->normalized_email = $arr['normalized_email'] ?? null;
         }
 
+=======
+
+    class User {
+        var $id;
+        var $name;
+        var $surname;
+        var $email;
+        var $email_status;
+        var $password_hash;
+        var $lockout;
+        var $normalized_username;
+        var $normalized_email;
+        
+        function __construct($arr) {
+            $this->id = $arr['_id'] ?? null;
+            $this->name = $arr['name'] ?? null;
+            $this->surname = $arr['surname'] ?? null;
+            $this->email = $arr['email'] ?? null;
+            $this->email_status = $arr['email_status'] ?? null;
+            $this->password_hash = $arr['password_hash'] ?? null;
+            $this->lockout = $arr['lockout'] ?? null;
+            $this->normalized_username = $arr['normalized_username'] ?? null;
+            $this->normalized_email = $arr['normalized_email'] ?? null;
+        }
+
+>>>>>>> Stashed changes
         function toJSON(){
             $arr = [];
             if($this->id != null) 

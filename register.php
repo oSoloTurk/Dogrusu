@@ -76,7 +76,7 @@ include("connection/session.php");
                             </div>
                             <div class="mt-3">
                                 <label class="form-label" for="repassword">Tekrar şifre</label>
-                                <input class="form-control" type="text" name="repassword" id="repassword">
+                                <input class="form-control" type="password" name="repassword" id="repassword">
                             </div>
                         </div>
                         <hr />

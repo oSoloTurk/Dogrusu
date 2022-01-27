@@ -32,5 +32,22 @@ if(params["msg"] != null){
                 icon: "success",
             });   
             break; 
+<<<<<<< Updated upstream
+=======
+        case "logged":
+            swal({
+                title: "Tebrikler",
+                text: "Başarıyla giriş yaptın!",
+                icon: "success",
+            });   
+            break; 
+        case "wrong_input":
+            swal({
+                title: "Hmm",
+                text: "Girdiğin bazı bilgiler yanlış!",
+                icon: "error",
+            });   
+            break; 
+>>>>>>> Stashed changes
     }
 }

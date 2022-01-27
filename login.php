@@ -18,20 +18,28 @@ include("connection/session.php");
 
 <?php 
   require_once("header.php");
-  if (isset($_POST['submit'])) {
+
+  require_once("models/User.php");
+
+  if (isset($_POST['login'])) {
     $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
     $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
-    //$data = executeQuery($GLOBALS['SQL_COMMANDS']['SELECT_USER_WITH_EMAIL_AND_PASSWORD'], "ss", $mail, $pwd);
+    $user = new User($_POST);
+
+    $result = $db->users->findOne($user->toJSON());
     
-    if ($data->num_rows == 1) {
-      $userData = mysqli_fetch_array($data);
+    if ($result != null) {
       $access_hash = hash('sha256', $mail);
 
       $_SESSION['token'] = $access_hash;
-      $_SESSION['id'] = $userData['id'];
-      $_SESSION['username'] = $userData['username'];
-      
-      //$insert = executeQuery($GLOBALS['SQL_COMMANDS']['INSERT_ACCESS_TOKEN'], "iss", $userData['id'], $access_hash, $access_hash);
+
+      require_once("models/Session.php");
+      //result contains informations of user and id converted session id
+      $result["_id"] = $access_hash;
+      $session = new Session($result);
+    
+      //insert session with override
+      $db->sessions->insertOne($session->toJSON());
 
       if (isset($_POST['remember']) && (($_POST['remember'] == 1) || ($_POST['remember'] == 'on'))) {
         setcookie("token", $access_hash, time() + 3600 * 24 * 365, '/');
@@ -52,15 +60,21 @@ include("connection/session.php");
                         <center>Giriş Yap</center>
                     </div>
                     <form method="post">
-                        <div class="mt-3">
-                            <label class="form-label" for="username">Kullanıcı Adı</label>
-                            <input class="form-control" type="text" name="username" id="username">
-                        </div>
-                        <div class="mt-3">
-                            <label class="form-label" for="password">Şifren</label>
+                        <div class="ml-3 mr-3">
+                            <div class="mt-3">
+                                <label class="form-label" for="email">E-Postan</label>
+                                <input class="form-control" type="text" name="email" id="email">
+                            </div>
+                            <div class="mt-3">
+                                <label class="form-label" for="password">Şifren</label>
 
-                            <input class="form-control" type="text" name="password" id="password">
-                        </div>
+                                <input class="form-control" type="text" name="password" id="password">
+                            </div>
+                            <div class="mt-3">
+                                <input type="checkbox" name="remember" id="remember">
+                                <label for="remember">Beni Hatırla</label>
+                            </div>
+                        </div>                        
                         <div class="mt-3">
                             <div class="row d-flex justify-content-between">
                                 <button class="btn btn-outline-primary ml-4" name="login" type="submit">Giriş
