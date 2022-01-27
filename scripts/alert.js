@@ -32,8 +32,6 @@ if(params["msg"] != null){
                 icon: "success",
             });   
             break; 
-<<<<<<< Updated upstream
-=======
         case "logged":
             swal({
                 title: "Tebrikler",
@@ -48,6 +46,19 @@ if(params["msg"] != null){
                 icon: "error",
             });   
             break; 
->>>>>>> Stashed changes
+        case "session-out":
+            swal({
+                title: "Oops",
+                text: "Oturumunun süresi dolmuş gözüküyor yeniden giriş yapmalısın!",
+                icon: "error",
+            });   
+            break;
+        case "logout":
+            swal({
+                title: "Bekliyoruz",
+                text: "Başarıyla çıkış yaptın, Tekrar gelmen için bekliyoruz.",
+                icon: "success",
+            });   
+            break;
     }
 }

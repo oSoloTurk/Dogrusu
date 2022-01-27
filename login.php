@@ -42,8 +42,7 @@ include("connection/session.php");
       $db->sessions->insertOne($session->toJSON());
 
       if (isset($_POST['remember']) && (($_POST['remember'] == 1) || ($_POST['remember'] == 'on'))) {
-        setcookie("token", $access_hash, time() + 3600 * 24 * 365, '/');
-        setcookie("id", $userData['id'], time() + 3600 * 24 * 365, '/');
+        setcookie("token", $access_hash, time() + 3600 * 24 * 30, '/');
       }
       sendToPage("index.php?msg=logged");
     } else {
@@ -68,7 +67,7 @@ include("connection/session.php");
                             <div class="mt-3">
                                 <label class="form-label" for="password">Şifren</label>
 
-                                <input class="form-control" type="text" name="password" id="password">
+                                <input class="form-control" type="password" name="password" id="password">
                             </div>
                             <div class="mt-3">
                                 <input type="checkbox" name="remember" id="remember">

@@ -1,8 +1,13 @@
 <?php
 
-if ($GLOBALS['login']) {
+    if(isset($_SESSION['token'])) {
+        
+?>
+<?php
+    } else {
+?>
 
-} else {
+<?php
 
 }
 
