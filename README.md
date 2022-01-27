@@ -7,7 +7,7 @@
 </div>
 
 # 
-# Dogrusu
+# Doğrusu: Yabancı kelimeler için Türkçe karşılıklar
 
 Sakarya University - Web Technologies Project
 
