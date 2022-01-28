@@ -27,8 +27,7 @@ include("connection/session.php");
     $user = new User($_POST);
 
     $user->password_hash = $pwd;
-    $result = $db->users->findOne($user->toJSON());
-    
+    $result = $db->users->findOne($user->toJSONAsIdentitiy());
     if ($result != null) {
       $access_hash = hash('sha256', $mail);
 
@@ -36,11 +35,12 @@ include("connection/session.php");
 
       require_once("models/Session.php");
       //result contains informations of user and id converted session id
+      $result["userId"] = $result["_id"];  
       $result["_id"] = $access_hash;
       $session = new Session($result);
     
       //insert session with override
-      $sessionJson = $session->toJSON();
+      $sessionJson = $session->toJSONAsIdentity();
       if($db->sessions->findOne($sessionJson) == null) {
         $db->sessions->insertOne($session->toJSON());
       }

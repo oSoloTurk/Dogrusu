@@ -15,7 +15,7 @@
         function __construct($arr) {
             $this->id = $arr['_id'] ?? null;
             $this->name = $arr['name'] ?? null;
-            $this->usurname = $arr['username'] ?? null;
+            $this->username = $arr['username'] ?? null;
             $this->surname = $arr['surname'] ?? null;
             $this->email = $arr['email'] ?? null;
             $this->email_status = $arr['email_status'] ?? null;
@@ -31,6 +31,8 @@
                 $arr["_id"]= $this->id;
             if($this->name != null) 
                 $arr["name"] = $this->name;
+            if($this->username != null) 
+                $arr["username"] = $this->username;
             if($this->surname != null) 
                 $arr["surname"] = $this->surname;
             if($this->email != null) 

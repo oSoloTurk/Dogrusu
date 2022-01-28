@@ -13,7 +13,7 @@ function createCard($word, $time, $description, $suggester) {
   echo '  <a href="vote.php?word='. $word .'" class="btn btn-primary">Tavsiye ver</a>';
   echo '</div>';
   echo '<div class="card-footer text-muted">';
-  echo '  '. $time .'';
+  echo '  '. $time .' önce tartışmaya açıldı.';
   echo '</div>';
   echo '</div>';
 }
@@ -48,10 +48,17 @@ function createCard($word, $time, $description, $suggester) {
             <div class="container">
                 <ul class="list-group">
                     <?php
-            foreach($cursor as $item) {
-              echo '<li class="list-group-item">'. createCard($item["word"], $item["time"], $item["description"], $item["suggester"]) .'</li>'; 
-            }
-          ?>
+                      require_once("utils/utils.php");
+                      $cache = [];
+                      $now = time();
+                      foreach($cursor as $item) {
+                        $id = strval($item["suggester"]);
+                        if(!isset($cache[$id])) {
+                          $cache[$id] = $db->users->findOne(['_id' => $item["suggester"]], ["username" => 1, "_id" => 0])["username"];
+                        }
+                        echo '<li class="list-group-item">'. createCard($item["word"], timeSpace(new DateTime($item["time"]), current_time()), $item["description"], $cache[$id]) .'</li>'; 
+                      }
+                    ?>
                 </ul>
             </div>
         </div>

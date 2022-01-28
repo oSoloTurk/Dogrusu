@@ -23,11 +23,12 @@ include("connection/session.php");
   
   if (isset($_POST['suggest'])) {
     require_once("models/Suggestion.php");
-
+    require_once("utils/utils.php");
+    
     $suggestion = new Suggestion($_POST);
     $suggestion->normalized_word = strtoupper($_POST["word"]);
-    $suggestion->suggester = $_SESSION['user']->id;
-    $suggestion->time = time() + 3600;
+    $suggestion->suggester = $_SESSION['user']->userId;
+    $suggestion->time = current_time()->format('Y-m-d H:i:s');
 
     if($db->suggestions->findOne($suggestion->toJSONAsIdentity()) == null) {
       $db->suggestions->insertOne($suggestion->toJSON());
