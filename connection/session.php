@@ -8,10 +8,14 @@
     $token = $_COOKIE['token'];
   }
   if(isset($token)) {
-    if($db->sessions->findOne(["_id" => $token]) == null) {
+    $cursor = $db->sessions->findOne(["_id" => $token]);
+    if($cursor == null) {
       unset($_SESSION["token"]);
       setcookie("token", "", time() - 3600, '/');
       header("Location:index.php?msg=session-out", true, 301);
+    } else {
+      require_once("models/Session.php");
+      new Session($cursor);
     }
   }
 ?>

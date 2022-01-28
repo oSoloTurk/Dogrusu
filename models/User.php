@@ -15,6 +15,7 @@
         function __construct($arr) {
             $this->id = $arr['_id'] ?? null;
             $this->name = $arr['name'] ?? null;
+            $this->usurname = $arr['username'] ?? null;
             $this->surname = $arr['surname'] ?? null;
             $this->email = $arr['email'] ?? null;
             $this->email_status = $arr['email_status'] ?? null;
@@ -45,6 +46,15 @@
             if($this->normalized_email != null) 
                 $arr["normalized_email"] = $this->normalized_email;
             return $arr;
+        }
+
+        function toJSONAsIdentitiy(){
+            $arr = [];
+            if($this->normalized_email != null) 
+                $arr["normalized_email"] = $this->normalized_email;
+            if($this->password_hash != null) 
+                $arr["password_hash"] = $this->password_hash;
+           return $arr;
         }
     }
 

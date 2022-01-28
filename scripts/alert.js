@@ -12,9 +12,29 @@ function transformToAssocArray( prmstr ) {
     }
     return params;
 }
+function removeParam(parameter) {
+    var url=document.location.href;
+    var urlparts= url.split('?');
+
+    if (urlparts.length>=2)
+    {
+    var urlBase=urlparts.shift(); 
+    var queryString=urlparts.join("?"); 
+
+    var prefix = encodeURIComponent(parameter)+'=';
+    var pars = queryString.split(/[&;]/g);
+    for (var i= pars.length; i-->0;)               
+        if (pars[i].lastIndexOf(prefix, 0)!==-1)   
+            pars.splice(i, 1);
+    url = urlBase+'?'+pars.join('&');
+    window.history.pushState('',document.title,url);
+
+    }
+    return url;
+}
 
 var params = getSearchParameters();
-
+//TODO: convert defination on the child js per page
 if(params["msg"] != null){
     switch(params["msg"]) {
         case "already-registered":
@@ -60,5 +80,13 @@ if(params["msg"] != null){
                 icon: "success",
             });   
             break;
+        case "already-have":
+            swal({
+                title: "Bu yolculuk çoktan başladı",
+                text: "Bu kelimenin anlamını bulmak için yolculuğa daha önce başladık, hemen katkı sunabilmen için yönlendiriyoruz.",
+                icon: "warning",
+            });   
+            break;
     }
+    removeParam("msg");
 }

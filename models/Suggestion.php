@@ -1,22 +1,53 @@
 <?php 
     
-    namespace oSoloTurk\Indeed\Model;
+    class Suggestion{
+        var $_id;
+        var $suggester;
+        var $word;
+        var $normalized_word;
+        var $description;
+        var $time;
+        var $status;
+        var $root;
 
-    use Purekid\Mongodm\Model;
+        function __construct($arr) {
+            $this->id = $arr['_id'] ?? null;
+            $this->suggester = $arr['suggester'] ?? null;
+            $this->word = $arr['word'] ?? null;
+            $this->description = $arr['description'] ?? null;
+            $this->normalized_word = $arr['normalized_word'] ?? null;
+            $this->status = $arr['status'] ?? null;
+            $this->time = $arr['time'] ?? null;
+            $this->root = $arr['root'] ?? null;
+        }
 
-    class Suggestion extends Model {
-        public static $config = "indeed";
-        public static $collection = "suggestions";
+        function toJSON(){
+            $arr = [];
+            if($this->id != null) 
+                $arr["_id"]= $this->id;
+            if($this->suggester != null) 
+                $arr["suggester"] = $this->suggester;
+            if($this->word != null) 
+                $arr["word"] = $this->word;
+            if($this->normalized_word != null) 
+                $arr["normalized_word"] = $this->normalized_word;
+            if($this->description != null) 
+                $arr["description"] = $this->description;
+            if($this->status != null) 
+                $arr["status"] = $this->status;
+            if($this->time != null) 
+                $arr["time"] = $this->time;
+            $arr["root"] = $this->root;
+            return $arr;
+        }
 
-        protected static $attrs = array(
-            
-            '_id' => array('type'=>'objectid'),
-            'suggester' => array('model'=>'oSoloTurk\Indeed\Model\User','type'=>'reference'),
-            'word' => array('type'=>'string'),
-            'normalized_word' => array('type'=>'string'),
-            'root' => array('model'=>'oSoloTurk\Indeed\Model\Suggestion','type'=>'reference')
-            
-        );
+        
+        function toJSONAsIdentity(){
+            $arr = [];
+            if($this->normalized_word != null) 
+                $arr["normalized_word"] = $this->normalized_word;
+            return $arr;
+        }
     }
 
 ?>

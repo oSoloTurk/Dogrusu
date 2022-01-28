@@ -11,6 +11,7 @@
             $this->name = $arr['name'] ?? null;
             $this->surname = $arr['surname'] ?? null;
             $this->email = $arr['email'] ?? null;
+            $_SESSION['user'] = $this; 
         }
 
         function toJSON(){
