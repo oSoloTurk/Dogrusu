@@ -25,8 +25,15 @@ include("connection/session.php");
             $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
             
             $user = new User($_POST);
+
+            $user->password_hash = $pwd;
+            $user->normalized_email = strtoupper($_POST["email"]);
+            $user->normalized_username = strtoupper($_POST["username"]);
+            $user->email_status = 0;
+            
             $userAsJson = $user->toJSON();
-            $alreadyExist = $db->users->findOne($userAsJson); 
+
+            $alreadyExist = $db->users->findOne($user->toJSONAsIdentitiy()); 
             
             if($alreadyExist == null ){
                 $data = $db->users->insertOne($userAsJson);

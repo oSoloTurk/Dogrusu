@@ -26,6 +26,7 @@ include("connection/session.php");
     $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
     $user = new User($_POST);
 
+    $user->password_hash = $pwd;
     $result = $db->users->findOne($user->toJSON());
     
     if ($result != null) {
@@ -39,8 +40,11 @@ include("connection/session.php");
       $session = new Session($result);
     
       //insert session with override
-      $db->sessions->insertOne($session->toJSON());
-
+      $sessionJson = $session->toJSON();
+      if($db->sessions->findOne($sessionJson) == null) {
+        $db->sessions->insertOne($session->toJSON());
+      }
+      
       if (isset($_POST['remember']) && (($_POST['remember'] == 1) || ($_POST['remember'] == 'on'))) {
         setcookie("token", $access_hash, time() + 3600 * 24 * 30, '/');
       }
