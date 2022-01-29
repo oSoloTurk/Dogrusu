@@ -8,6 +8,7 @@
         var $description;
         var $time;
         var $status;
+        var $votes;
         var $root;
 
         function __construct($arr) {
@@ -19,6 +20,7 @@
             $this->status = $arr['status'] ?? null;
             $this->time = $arr['time'] ?? null;
             $this->root = $arr['root'] ?? null;
+            $this->votes = $arr['votes'] ?? null;
         }
 
         function toJSON(){
@@ -37,6 +39,7 @@
                 $arr["status"] = $this->status;
             if($this->time != null) 
                 $arr["time"] = $this->time;
+            $arr["votes"] = $this->votes ?? [];
             $arr["root"] = $this->root;
             return $arr;
         }

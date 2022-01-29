@@ -2,7 +2,7 @@
   include("connection/session.php");
 
 
-function createCard($word, $time, $description, $suggester) {
+function createCard($word, $time, $description, $suggester, $id) {
   echo ' <div class="card text-center">';
   echo '<div class="card-header">';
   echo '  '. $suggester .' Tarafından tartışmaya açıldı.';
@@ -10,7 +10,7 @@ function createCard($word, $time, $description, $suggester) {
   echo '<div class="card-body">';
   echo '  <h5 class="card-title">'. $word .'</h5>';
   echo '  <p class="card-text">'. $description .'</p>';
-  echo '  <a href="vote.php?word='. $word .'" class="btn btn-primary">Tavsiye ver</a>';
+  echo '  <a href="vote.php?id='. $id .'" class="btn btn-primary">Tavsiye ver</a>';
   echo '</div>';
   echo '<div class="card-footer text-muted">';
   echo '  '. $time .' önce tartışmaya açıldı.';
@@ -36,8 +36,13 @@ function createCard($word, $time, $description, $suggester) {
   require_once("header.php");
   ?>
     <?php
-
-    $cursor = $db->suggestions->find(["root" => null]);
+    $cursor = $db->suggestions->find(
+      ["root" => null,
+        "\$or" => [
+          ["suggester" => $_SESSION["user"]->userId],
+          ["status" => 1]
+        ]
+      ]);
 
   ?>
     <article>
@@ -56,7 +61,7 @@ function createCard($word, $time, $description, $suggester) {
                         if(!isset($cache[$id])) {
                           $cache[$id] = $db->users->findOne(['_id' => $item["suggester"]], ["username" => 1, "_id" => 0])["username"];
                         }
-                        echo '<li class="list-group-item">'. createCard($item["word"], timeSpace(new DateTime($item["time"]), current_time()), $item["description"], $cache[$id]) .'</li>'; 
+                        echo '<li class="list-group-item">'. createCard($item["word"], timeSpace(new DateTime($item["time"]), current_time()), $item["description"], $cache[$id], $item["_id"]) .'</li>'; 
                       }
                     ?>
                 </ul>

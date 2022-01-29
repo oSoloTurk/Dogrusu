@@ -87,6 +87,20 @@ if(params["msg"] != null){
                 icon: "warning",
             });   
             break;
+        case "sended-verify":
+            swal({
+                title: "Tebrikler",
+                text: "Katkın için minnettarız, Tavsiyeni denetime gönderdik ardından yayında olacak!",
+                icon: "success",
+            });   
+            break;
+        case "wrong-word":
+            swal({
+                title: "Oops",
+                text: "Sanırım yanlış çekmeceleri karıştırıyorsun, doğru alana yönlendiriliyorsun.",
+                icon: "warning",
+            });   
+            break;
     }
     removeParam("msg");
 }
