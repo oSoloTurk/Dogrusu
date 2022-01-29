@@ -24,10 +24,11 @@ include("connection/session.php");
   if (isset($_POST['login'])) {
     $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
     $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
-    $user = new User($_POST);
+    $user = new User(["email" => $mail, "passwordhash" => $pwd]);
 
     $user->password_hash = $pwd;
     $result = $db->users->findOne($user->toJSONAsIdentitiy());
+
     if ($result != null) {
       $access_hash = hash('sha256', $mail);
 

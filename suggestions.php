@@ -47,9 +47,19 @@ function createCard($word, $time, $description, $suggester, $id) {
   ?>
     <article>
         <div class="container">
-        <a href="suggestion.php" class="btn btn-outline-primary btn-block m-4">
-                Doğrusu Nedir?
-        </a>
+        <?php 
+            if($_SESSION["user"]->point < 0) {
+              echo '<div title="Tavsiye vermek için en az 10 puana sahip olmalısın." >';
+              echo '<a href="#" class="disabled btn btn-outline-primary btn-block m-4">';
+              echo 'Doğrusu Nedir?';
+              echo '</a>'; 
+              echo '</div>';
+            }else {
+              echo '<a href="suggestion.php" class="btn btn-outline-primary btn-block m-4">';
+              echo 'Doğrusu Nedir?';
+              echo '</a>'; 
+            }
+          ?> 
             <div class="container">
                 <ul class="list-group">
                     <?php

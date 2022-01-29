@@ -87,19 +87,23 @@
         foreach($votes as $vote) {
           $suggestionVote = null;
           try {
-            $suggestionVote = new Suggestion($db->suggestions->findOne(
-              ["_id" => new MongoDB\BSON\ObjectID($vote)], 
-              ["normalized_word" => 1,
-              "votes" => 1]
-            ));
-            array_push($suggestionVote->votes,$_SESSION["user"]->userId);
-            $db->suggestions->updateOne($suggestionVote->toJSONAsIdentity(), $suggestionVote->toJSON());
+            $db->suggestions->updateOne(
+              ["\$eq"=> 
+                ["_id" => new MongoDB\BSON\ObjectID($vote)]
+              ], 
+              ["\$push" => 
+                ["votes" => $_SESSION["user"]->userId]
+              ]);
           } catch (Exception) {
             sendToPage("vote.php?id=" . $_GET["id"] . "&msg=something-wrong");
             return;
           }
         }
+        $db->users->updateOne(
+          ["_id" => $_SESSION["user"]->userId], 
+          ["\$inc" => ["point"=>1]]);
       }
+
 
       $alreadyVoted = $db->suggestions->findOne(
         ["\$and" => 
@@ -112,7 +116,7 @@
       );
 
       $cursor = $db->suggestions->find(
-        ["root" => $word->normalized_word]
+        ["root" => $word->normalized_word, "status" => 1]
       );
   ?>
     <article>

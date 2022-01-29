@@ -10,6 +10,7 @@
         var $password_hash;
         var $lockout;
         var $normalized_username;
+        var $point;
         var $normalized_email;
         
         function __construct($arr) {
@@ -21,6 +22,7 @@
             $this->email_status = $arr['email_status'] ?? null;
             $this->password_hash = $arr['password_hash'] ?? null;
             $this->lockout = $arr['lockout'] ?? null;
+            $this->point = $arr['point'] ?? 0;
             $this->normalized_username = $arr['normalized_username'] ?? null;
             $this->normalized_email = $arr['normalized_email'] ?? null;
         }
@@ -45,15 +47,16 @@
                 $arr["lockout"] = $this->lockout;
             if($this->normalized_username != null) 
                 $arr["normalized_username"] = $this->normalized_username;
-            if($this->normalized_email != null) 
+                if($this->normalized_email != null) 
                 $arr["normalized_email"] = $this->normalized_email;
+            $arr["point"] = $this->point;
             return $arr;
         }
 
         function toJSONAsIdentitiy(){
             $arr = [];
-            if($this->normalized_email != null) 
-                $arr["normalized_email"] = $this->normalized_email;
+            if($this->email != null) 
+                $arr["email"] = $this->email;
             if($this->password_hash != null) 
                 $arr["password_hash"] = $this->password_hash;
            return $arr;

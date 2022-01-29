@@ -101,6 +101,13 @@ if(params["msg"] != null){
                 icon: "warning",
             });   
             break;
+        case "something-wrong":
+            swal({
+                title: "Oops",
+                text: "Sanırım biraz sorun var, istersen tekrar dene.",
+                icon: "warning",
+            });   
+            break;
     }
     removeParam("msg");
 }
