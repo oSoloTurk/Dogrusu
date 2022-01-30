@@ -5,9 +5,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light center">
         <div class="navbar-inner"> 
           <ul class="navbar-nav">
-              <li class="nav-item" id="play">
-                  <a class="nav-link" href="play.php">Oyna</a>
-              </li>
               <li class="nav-item" id="suggestions">
                   <a class="nav-link" href="suggestions.php">Tavsiye Ver</a>
               </li>

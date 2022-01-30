@@ -4,32 +4,56 @@
   function createListElement($rank, $name, $profileUrl, $point) {
     echo '<a class="pretty" href="'.$profileUrl.'">';
     echo '  <li class="clickeable list-group-item justify-content-between d-flex" id="rank-'.$rank.'">';
-    echo '      <span>'.$rank.'</span>';
+    echo '      <span>#'.$rank.'</span>';
     echo '      <span>'.$name.'</span>';
     echo '      <span>'.$point.'</span>';
     echo '  </li>';
     echo '</a>';
   }
-  //insert previously leaderboard create date controls in config
-  $db->leaderboard->deleteMany([]);
-  $db->users->aggregate(
-    [
-        [
-            '$sort'=> [
-                'point'=> -1
-            ]
-        ], 
-        [
-            '$project'=> [
-                'username'=> 1,
-                'point'=> 1
-            ]
-        ], 
-        [
-            '$out'=> 'leaderboard'
-        ]
-    ]
-);
+
+  $settingSource = $db->config->findOne(["normalized_settings_name" => "LEADERBOARD"]);
+  $setting = null;
+
+  require_once("models/Setting.php");
+  require_once("utils/utils.php");
+
+  if($settingSource == null) {
+    $setting = new Setting([
+        "settings_name" => "leaderboard", 
+        "normalized_settings_name" => "LEADERBOARD",
+        "value" => current_time()->format('Y-m-d H:i:s')
+    ]);
+    $db->config->insertOne($setting->toJSON());
+  } else {
+      $settingSource["value"] = new DateTime($settingSource["value"]);
+      $setting = new Setting($settingSource); 
+  }
+  
+  $timeDiff =  current_time()->diff($setting->value);
+  $diffAsHour = $timeDiff->m * 30 * 24 + $timeDiff->h;
+  if($diffAsHour >= 6) { //6 hours
+    $setting->value = current_time();
+    $db->config->updateOne($setting->toJSONAsIdentity(), $setting->toJSON());
+    $db->leaderboard->deleteMany([]);
+    $db->users->aggregate(
+      [
+          [
+              '$sort'=> [
+                  'point'=> -1
+              ]
+          ], 
+          [
+              '$project'=> [
+                  'username'=> 1,
+                  'point'=> 1
+              ]
+          ], 
+          [
+              '$out'=> 'leaderboard'
+          ]
+      ]
+    );
+  }
 ?>
 
 <!DOCTYPE html>
@@ -49,37 +73,53 @@
   require_once("header.php");
   ?>
     <?php
-    $currentPage = 1;
-    $maxPage = 3;
-    $data = [
-        ["1", "Hakkı Ceylan", "profile.php?id=hakki", 1500],
-     ["2", "Yasin Subaşı", "profile.php?id=yasin", 1000],
-    ["3", "Irfan DarmaDuman", "profile.php?id=irfan", 500]
-];
+    $currentPage = $_GET["page"] ?? 1;
+    $cursor = $db->leaderboard->find([], ["limit" => ($currentPage - 1) * 20, "take" => $currentPage * 20]);
+    $maxPage = (int)(1 + $db->leaderboard->count() / 20);
+
   ?>
     <article>
-            <div class="container">
-                <ul class="list-group" id="leaderboard">
-            <?php
-                foreach($data as $item) {
-                    createListElement($item[0], $item[1], $item[2], $item[3]);
-                }
-            ?>
-            </ul>
-            <div class="row">
-                <button class="btn btn-primary">
-                    Önceki Sayfa
-                </button>
-                <?php
-                    for($index = 1; $index < $currentPage + 3 && $index <= $maxPage;$index++) {
-                        echo '<a class="btn btn-primary" href="leaderboard.php?page='.$index.'">'.$index.'</a>';
-                    }
-                ?>
-                <button class="btn btn-primary">
-                    Sonraki Sayfa
-                </button>
+        <div class="container">
+            <div class="row justify-content-center">
+                <ul class="list-group mt-3 w-50" id="leaderboard">
+                    <?php
+                            $counter = 1 + ($currentPage - 1) * 20;
+                            foreach($cursor as $item) {
+                                createListElement($counter++, $item["username"], "profile.php?username=".$item["username"], $item["point"] ?? 0);
+                            }
+                        ?>
+                    <div class="text-right mt-2">
+                        <i>Son Güncellenme: <?php echo format_interval($timeDiff); ?> önce,</i>
+                    </div>
+                </ul>
             </div>
-            
+            <div class="row justify-content-center mt-3">
+                <?php if($currentPage > 1) { ?>
+                <a class="btn btn-outline-primary m-1" href="leaderboard.php?page=" . $currentPage - 1>
+                    Önceki Sayfa
+                </a>
+                <?php } else { ?>
+                <a class="btn btn-outline-primary disabled m-1">
+                    Önceki Sayfa
+                </a>
+                <?php }?>
+                <?php
+                        for($index = 1; $index < $currentPage + 3 && $index <= $maxPage;$index++) {
+                            echo '<a class="btn btn-'. ($index == $currentPage ? "primary" : "outline-primary") .' m-1" href="leaderboard.php?page='.$index.'">'.$index.'</a>';
+                        }
+                    ?>
+
+                <?php if($currentPage < $maxPage) { ?>
+                <a class="btn btn-outline-primary m-1" href="leaderboard.php?page=" . $currentPage + 1>
+                    Sonraki Sayfa
+                </a>
+                <?php } else { ?>
+                <a class="btn btn-outline-primary disabled m-1">
+                    Sonraki Sayfa
+                </a>
+                <?php }?>
+            </div>
+
         </div>
     </article>
 
