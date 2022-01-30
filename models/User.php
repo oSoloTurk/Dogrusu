@@ -13,7 +13,7 @@
         var $point;
         var $normalized_email;
         
-        function __construct($arr) {
+        function __construct($arr, $isSession = false) {
             $this->id = $arr['_id'] ?? null;
             $this->name = $arr['name'] ?? null;
             $this->username = $arr['username'] ?? null;
@@ -25,31 +25,22 @@
             $this->point = $arr['point'] ?? 0;
             $this->normalized_username = $arr['normalized_username'] ?? null;
             $this->normalized_email = $arr['normalized_email'] ?? null;
+            if($isSession) $_SESSION["user"] = $this->toJSON();
         }
 
         function toJSON(){
             $arr = [];
-            if($this->id != null) 
-                $arr["_id"]= $this->id;
-            if($this->name != null) 
-                $arr["name"] = $this->name;
-            if($this->username != null) 
-                $arr["username"] = $this->username;
-            if($this->surname != null) 
-                $arr["surname"] = $this->surname;
-            if($this->email != null) 
-                $arr["email"] = $this->email;
-            if($this->email_status != null) 
-                $arr["email_status"] = $this->email_status;
-            if($this->password_hash != null) 
-                $arr["password_hash"] = $this->password_hash;
-            if($this->lockout != null) 
-                $arr["lockout"] = $this->lockout;
-            if($this->normalized_username != null) 
-                $arr["normalized_username"] = $this->normalized_username;
-                if($this->normalized_email != null) 
-                $arr["normalized_email"] = $this->normalized_email;
-            $arr["point"] = $this->point;
+            $arr["_id"]= $this->id ?? null;
+            $arr["name"] = $this->name ?? null;
+            $arr["username"] = $this->username ?? null;
+            $arr["surname"] = $this->surname ?? null;
+            $arr["email"] = $this->email ?? null;
+            $arr["email_status"] = $this->email_status ?? 0;
+            $arr["password_hash"] = $this->password_hash ?? null;
+            $arr["lockout"] = $this->lockout ?? null;
+            $arr["normalized_username"] = $this->normalized_username ?? strtoupper($arr["username"]);
+            $arr["normalized_email"] = $this->normalized_email ?? strtoupper($arr["email"]);
+            $arr["point"] = $this->point ?? 0;
             return $arr;
         }
 

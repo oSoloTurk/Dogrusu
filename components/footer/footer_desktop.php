@@ -1,4 +1,4 @@
-<?php if(isset($_SESSION['token'])) { ?>
+<?php if(isset($_SESSION['user'])) { ?>
 
     <footer class="footer mt-auto py-3 text-center mt-5 mb-2">
         <div class="footer navbar-inverse navbar-fixed-bottom">

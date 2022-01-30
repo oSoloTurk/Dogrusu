@@ -1,5 +1,5 @@
 <?php 
-  if(isset($_SESSION['token'])) {
+  if(isset($_SESSION['user'])) {
 
 ?>
     <nav class="navbar navbar-expand-lg navbar-light bg-light center">

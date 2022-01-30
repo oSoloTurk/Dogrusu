@@ -1,6 +1,7 @@
 <?php
 
 include("connection/session.php");
+requiredLogin(false);
 
 ?>
 <!DOCTYPE html>
@@ -30,25 +31,7 @@ include("connection/session.php");
     $result = $db->users->findOne($user->toJSONAsIdentitiy());
 
     if ($result != null) {
-      $access_hash = hash('sha256', $mail);
-
-      $_SESSION['token'] = $access_hash;
-
-      require_once("models/Session.php");
-      //result contains informations of user and id converted session id
-      $result["userId"] = $result["_id"];  
-      $result["_id"] = $access_hash;
-      $session = new Session($result);
-    
-      //insert session with override
-      $sessionJson = $session->toJSONAsIdentity();
-      if($db->sessions->findOne($sessionJson) == null) {
-        $db->sessions->insertOne($session->toJSON());
-      }
-      
-      if (isset($_POST['remember']) && (($_POST['remember'] == 1) || ($_POST['remember'] == 'on'))) {
-        setcookie("token", $access_hash, time() + 3600 * 24 * 30, '/');
-      }
+      $user = new User($result, true);
       sendToPage("index.php?msg=logged");
     } else {
       sendToPage("login.php?msg=wrong_input");
@@ -56,11 +39,10 @@ include("connection/session.php");
   } ?>
 
     <article>
-        <div class="container-md row">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
                 <div class="mt-5 border">
-                    <div>
+                    <div class="m-2">
                         <center>Giriş Yap</center>
                     </div>
                     <form method="post">
@@ -93,7 +75,6 @@ include("connection/session.php");
                     </form>
                 </div>
             </div>
-            <div class="col-md-2"></div>
         </div>
     </article>
 

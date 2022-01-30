@@ -1,5 +1,6 @@
 <?php 
-  include("connection/session.php");
+  require_once("connection/session.php");
+  requiredLogin(true);
 
 
 function createCard($word, $time, $description, $suggester, $id) {
@@ -39,7 +40,7 @@ function createCard($word, $time, $description, $suggester, $id) {
     $cursor = $db->suggestions->find(
       ["root" => null,
         "\$or" => [
-          ["suggester" => $_SESSION["user"]->userId],
+          ["suggester" => $_SESSION["user"]["_id"]],
           ["status" => 1]
         ]
       ]);
@@ -48,7 +49,7 @@ function createCard($word, $time, $description, $suggester, $id) {
     <article>
         <div class="container">
         <?php 
-            if($_SESSION["user"]->point < 0) {
+            if($_SESSION["user"]["point"] < 0) {
               echo '<div title="Tavsiye vermek için en az 10 puana sahip olmalısın." >';
               echo '<a href="#" class="disabled btn btn-outline-primary btn-block m-4">';
               echo 'Doğrusu Nedir?';

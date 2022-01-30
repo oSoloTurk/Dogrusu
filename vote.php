@@ -1,5 +1,6 @@
 <?php 
   include("connection/session.php");
+  requiredLogin();
 
   function createPicker($id, $word) {
     echo '<div class="form-check mean-checkbox" id="form-control-'. $id .'">';
@@ -74,7 +75,7 @@
             ["word" => $customVote,
              "normalized_word" => strtoupper($customVote),
              "status" => 0,
-             "suggester" => $_SESSION["user"]->userId,
+             "suggester" => $_SESSION["user"]["_id"],
              "root" => $word->normalized_word
             ]);
             $result =$db->suggestions->findOne($customSuggestion->toJSONAsIdentity());
@@ -92,7 +93,7 @@
                 ["_id" => new MongoDB\BSON\ObjectID($vote)]
               ], 
               ["\$push" => 
-                ["votes" => $_SESSION["user"]->userId]
+                ["votes" => $_SESSION["user"]["_id"]]
               ]);
           } catch (Exception) {
             sendToPage("vote.php?id=" . $_GET["id"] . "&msg=something-wrong");
@@ -100,7 +101,7 @@
           }
         }
         $db->users->updateOne(
-          ["_id" => $_SESSION["user"]->userId], 
+          ["_id" => $_SESSION["user"]["_id"]], 
           ["\$inc" => ["point"=>1]]);
       }
 
@@ -109,8 +110,8 @@
         ["\$and" => 
           [["root" => $word->normalized_word], 
           ["\$or" => [
-            ["votes.voter" => $_SESSION["user"]->userId], 
-            ["suggester" => $_SESSION["user"]->userId]
+            ["votes.voter" => $_SESSION["user"]["_id"]], 
+            ["suggester" => $_SESSION["user"]["_id"]]
           ]]
         ]]
       );

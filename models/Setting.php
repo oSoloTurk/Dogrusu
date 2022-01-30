@@ -28,8 +28,8 @@
 
         function toJSONAsIdentity(){
             $arr = [];
-            if($this->normalized_settings_Name != null) 
-                $arr["normalized_settings_Name"]= $this->normalized_settings_Name;
+            if($this->normalized_settings_name != null) 
+                $arr["normalized_settings_name"]= $this->normalized_settings_name;
             return $arr;
         }
     }

@@ -1,12 +1,16 @@
 <?php 
   include("connection/session.php");
+  requiredLogin(false);
 
-  function createListElement($rank, $name, $profileUrl, $point) {
+  require_once("utils/gravatar.php");
+  function createListElement($rank, $name, $profileUrl, $mail, $point) {
     echo '<a class="pretty" href="'.$profileUrl.'">';
-    echo '  <li class="clickeable list-group-item justify-content-between d-flex" id="rank-'.$rank.'">';
-    echo '      <span>#'.$rank.'</span>';
-    echo '      <span>'.$name.'</span>';
-    echo '      <span>'.$point.'</span>';
+    echo '  <li class="clickeable list-group-item row d-flex" id="rank-'.$rank.'">';
+    echo '      <span class="col-4">#'.$rank.'';
+    echo '          <img src="'.get_gravatar($mail, 128).'" alt="Avatar" class="avatar" width="30%" height="100%" title="Gravatar tarafından sağlanmaktadır.">';
+    echo '      </span>';
+    echo '      <span class="align-self-center text-center col-4">'.$name.'</span>';
+    echo '      <span class="align-self-center text-center col-4">'.$point.'</span>';
     echo '  </li>';
     echo '</a>';
   }
@@ -17,6 +21,7 @@
   require_once("models/Setting.php");
   require_once("utils/utils.php");
 
+  $reset = true;
   if($settingSource == null) {
     $setting = new Setting([
         "settings_name" => "leaderboard", 
@@ -24,16 +29,19 @@
         "value" => current_time()->format('Y-m-d H:i:s')
     ]);
     $db->config->insertOne($setting->toJSON());
+    $reset = true;
+    $timeDiff = DateInterval::createFromDateString("1 second");
   } else {
-      $settingSource["value"] = new DateTime($settingSource["value"]);
-      $setting = new Setting($settingSource); 
+      $setting = new Setting($settingSource);     
+      $timeDiff = current_time()->diff(new DateTime($setting->value));  
+      $diffAsHour = $timeDiff->m * 30 * 24 + $timeDiff->h;
+      if($diffAsHour <= 6) { //6 hours
+        $reset = false;
+      }
   }
-  
-  $timeDiff =  current_time()->diff($setting->value);
-  $diffAsHour = $timeDiff->m * 30 * 24 + $timeDiff->h;
-  if($diffAsHour >= 6) { //6 hours
-    $setting->value = current_time();
-    $db->config->updateOne($setting->toJSONAsIdentity(), $setting->toJSON());
+  if($reset) {
+    $setting->value = current_time()->format('Y-m-d H:i:s');
+    $db->config->updateOne($setting->toJSONAsIdentity(), ['$set' => $setting->toJSON()]);
     $db->leaderboard->deleteMany([]);
     $db->users->aggregate(
       [
@@ -45,7 +53,8 @@
           [
               '$project'=> [
                   'username'=> 1,
-                  'point'=> 1
+                  'point'=> 1,
+                  'email'=> 1
               ]
           ], 
           [
@@ -85,7 +94,7 @@
                     <?php
                             $counter = 1 + ($currentPage - 1) * 20;
                             foreach($cursor as $item) {
-                                createListElement($counter++, $item["username"], "profile.php?username=".$item["username"], $item["point"] ?? 0);
+                                createListElement($counter++, $item["username"], "profile.php?username=".$item["username"], $item["email"],$item["point"] ?? 0);
                             }
                         ?>
                     <div class="text-right mt-2">

@@ -1,5 +1,6 @@
 <?php 
   include("connection/session.php");
+  requiredLogin(false);
 ?>
 
 <!DOCTYPE html>
