@@ -10,6 +10,26 @@
     echo '  </li>';
     echo '</a>';
   }
+  //insert previously leaderboard create date controls in config
+  $db->leaderboard->deleteMany([]);
+  $db->users->aggregate(
+    [
+        [
+            '$sort'=> [
+                'point'=> -1
+            ]
+        ], 
+        [
+            '$project'=> [
+                'username'=> 1,
+                'point'=> 1
+            ]
+        ], 
+        [
+            '$out'=> 'leaderboard'
+        ]
+    ]
+);
 ?>
 
 <!DOCTYPE html>
