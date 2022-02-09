@@ -1,0 +1,21 @@
+#Use root/example user/password credentials
+version: '3.9'
+
+services:
+     nginx:    
+      build: ./nginx/  
+      container_name: nginx-container  
+      volumes:  
+       - ./www/html/:/var/www/html/
+      ports:  
+       - 80:80  
+      links:  
+       - php  
+
+     php:    
+      build: ./php/  
+      container_name: php-container  
+      expose:  
+       - 9000 
+      volumes:  
+       - ./www/html/:/var/www/html/
