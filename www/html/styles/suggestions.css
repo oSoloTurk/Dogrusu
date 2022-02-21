@@ -1,0 +1,12 @@
+.btn {
+    border-bottom: dotted 5px !important;
+    border: 0;
+    border-color: cornflowerblue;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    border-bottom: dotted 3px !important;
+    border: 0;
+    border-color: cornflowerblue
+}
