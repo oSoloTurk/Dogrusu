@@ -4,14 +4,14 @@
 
 
 function createCard($word, $time, $description, $suggester, $id) {
-  echo ' <div class="card text-center">';
+  echo ' <div class="card text-center w-25 m-5 btn">';
   echo '<div class="card-header">';
-  echo '  '. $suggester .' Tarafından tartışmaya açıldı.';
+  echo '  <u>'. $suggester .'</u> Tarafından tartışmaya açıldı.';
   echo '</div>';
   echo '<div class="card-body">';
-  echo '  <h5 class="card-title">'. $word .'</h5>';
-  echo '  <p class="card-text">'. $description .'</p>';
-  echo '  <a href="vote.php?id='. $id .'" class="btn btn-primary">Tavsiye ver</a>';
+  echo '  <h5 class="card-title" title="Karşılık aranan kelime">'. $word .'</h5>';
+  echo '  <p class="card-text" title="Önerenin Açıklaması">'. $description .'</p>';
+  echo '  <a href="vote.php?id='. $id .'" class="btn button text-center m-4">Tavsiye ver</a>';
   echo '</div>';
   echo '<div class="card-footer text-muted">';
   echo '  '. $time .' önce tartışmaya açıldı.';
@@ -28,7 +28,8 @@ function createCard($word, $time, $description, $suggester, $id) {
     <meta charset="utf-8" />
 
     <?php require_once("styles.php"); ?>
-    
+    <link rel="stylesheet" href="styles/suggestions.css">
+
 </head>
 
 <body>
@@ -40,7 +41,7 @@ function createCard($word, $time, $description, $suggester, $id) {
     $cursor = $db->suggestions->find(
       ["root" => null,
         "\$or" => [
-          ["suggester" => $_SESSION["user"]["_id"]],
+          ["suggester.\$oid" => $_SESSION["user"]["_id"]],
           ["status" => 1]
         ]
       ]);
@@ -48,34 +49,46 @@ function createCard($word, $time, $description, $suggester, $id) {
   ?>
     <article>
         <div class="container">
-        <?php 
-            if($_SESSION["user"]["point"] < 0) {
-              echo '<div title="Tavsiye vermek için en az 10 puana sahip olmalısın." >';
-              echo '<a href="#" class="disabled btn btn-outline-primary btn-block m-4">';
-              echo 'Doğrusu Nedir?';
-              echo '</a>'; 
-              echo '</div>';
-            }else {
-              echo '<a href="suggestion.php" class="btn btn-outline-primary btn-block m-4">';
-              echo 'Doğrusu Nedir?';
-              echo '</a>'; 
-            }
-          ?> 
+          <div class="row justify-content-center">
+            <?php 
+              if($_SESSION["user"]["point"] < 0) {
+                echo '<div title="Tavsiye vermek için en az 10 puana sahip olmalısın." >';
+                echo '<a href="#" class="disabled btn btn-outline-primary btn-block m-4">';
+                echo 'Doğrusu Nedir?';
+                echo '</a>'; 
+                echo '</div>';
+              }else {
+                echo '<a href="suggestion.php" class="btn button text-center w-25 btn-block m-4">';
+                echo 'Doğrusu Nedir?';
+                echo '</a>'; 
+              }
+            ?>
+          </div>
             <div class="container">
-                <ul class="list-group">
                     <?php
                       require_once("utils/utils.php");
                       $cache = [];
                       $now = time();
+                      $counter = 0;
                       foreach($cursor as $item) {
+                        if($counter % 3 == 0) {
+                          echo '<div class="d-flex justify-content-start">';
+                        }
                         $id = strval($item["suggester"]);
                         if(!isset($cache[$id])) {
                           $cache[$id] = $db->users->findOne(['_id' => $item["suggester"]], ["username" => 1, "_id" => 0])["username"];
                         }
-                        echo '<li class="list-group-item">'. createCard($item["word"], timeSpace(new DateTime($item["time"]), current_time()), $item["description"], $cache[$id], $item["_id"]) .'</li>'; 
+                        echo createCard($item["word"], timeSpace(new DateTime($item["time"]), current_time()), $item["description"], $cache[$id], $item["_id"]); 
+                        if($counter % 3 == 2) {
+                          echo '</div>';
+                        }
+                        $counter++;
+                      }
+                      
+                      if($counter != 0) {
+                        echo '</div>';
                       }
                     ?>
-                </ul>
             </div>
         </div>
     </article>
