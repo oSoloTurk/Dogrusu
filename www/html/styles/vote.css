@@ -1,0 +1,9 @@
+.bubble{
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    margin: 1rem 0.5rem;
+    cursor: pointer;
+    border-radius: 16px;
+}

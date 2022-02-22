@@ -3,12 +3,29 @@
   requiredLogin();
 
   function createPicker($id, $word) {
-    echo '<div class="form-check mean-checkbox" id="form-control-'. $id .'">';
-    echo '<input class="form-check-input" type="checkbox" name="'. $id .'" id="'. $id .'">';
-    echo '<label class="form-check-label" for="'.$id.'">';
-    echo '  '. $word .'';
-    echo '</label>';
-    echo '</div>';
+      echo '<div class="form-check mean-checkbox" id="form-control-'. $id .'">';
+      echo '<input class="form-check-input" type="checkbox" name="'. $id .'" id="'. $id .'">';
+      echo '<label class="form-check-label" for="'.$id.'">';
+      echo '  '. $word .'';
+      echo '</label>';
+      echo '</div>';
+  }
+
+  function createSuggestionBubble($id, $word, $isVoted) {
+    echo 
+      '<div id="'.$id.'" class="bubble '. 
+        ($isVoted
+          ? 'bg-success" title="Senin Cevabın"' 
+          : 'bg-light" title="Diğer Öneriler"'
+        ).
+        '><span class="text-center '.
+        ($isVoted
+          ? 'text-white'
+          : 'text-dark'
+        ) .' m-3">'.
+          $word
+        .'</span>'.
+      '</div>';
   }
 ?>
 
@@ -45,7 +62,7 @@
             "root" => 1,
             "status" => 1]
           ));
-      } catch (Exception) {
+      } catch (Exception $e) {
         $word = null;
       }
 
@@ -90,12 +107,12 @@
           try {
             $db->suggestions->updateOne(
               ["\$eq"=> 
-                ["_id" => new MongoDB\BSON\ObjectID($vote)]
+                ["_id" => new MongoDB/BSON/ObjectID($vote)]
               ], 
               ["\$push" => 
                 ["votes" => $_SESSION["user"]["_id"]]
               ]);
-          } catch (Exception) {
+          } catch (Exception $e) {
             sendToPage("vote.php?id=" . $_GET["id"] . "&msg=something-wrong");
             return;
           }
@@ -122,7 +139,8 @@
   ?>
     <article>
         <div class="container">
-            <div class="text-center"><i>Karşılık aranan kelime: <span id="word"><u><?php echo $word->word ?></u></span></i></div>
+            <div class="text-center"><i>Karşılık aranan kelime: <span
+                        id="word"><u><?php echo $word->word ?></u></span></i></div>
             <hr />
             <div class="text-center"><i>Yazarın Açıklaması: <u><?php echo $word->description ?></u></i></div>
             <hr />
@@ -132,10 +150,10 @@
             if($alreadyVoted == null) {
                
             ?>
-              <form action="" method="post">
-                  <div class="container">
-                      <ul class="list-group">
-                          <?php
+            <form action="" method="post">
+                <div class="container">
+                    <ul class="list-group">
+                        <?php
                           if($cursor->isDead()) {
                             echo '<i id="meanings_empty">Daha önce hiçkimse bu kelime için tavsiye vermedi.</i>';
                           } else {
@@ -147,17 +165,31 @@
                             createPicker("custom_suggest", "Daha iyi bir fikrim var!");
                           }
                           ?>
-                      </ul>
-                      <hr />
-                      <label for="custom_suggestion">Senin Tavsiyen</label>
-                      <input class="form-control" type="text" name="custom_suggestion" id="custom_suggestion" disabled>
-                  </div>
-                  <div class="row justify-content-center m-3">
-                      <button class="btn btn-success" name="suggest">Tavsiyemi Gönder</button>
-                  </div>
-              </form>
-            <?php } else { ?>
-              Zaten Oy kullandın.
+                    </ul>
+                    <hr />
+                    <label for="custom_suggestion">Senin Tavsiyen</label>
+                    <input class="form-control" type="text" name="custom_suggestion" id="custom_suggestion" disabled>
+                </div>
+                <div class="row justify-content-center m-3">
+                    <button class="btn btn-success" name="suggest">Tavsiyemi Gönder</button>
+                </div>
+            </form>
+            <?php 
+              } else { 
+                echo '<script>markup('. $alreadyVoted['word']  .')</script>';
+            ?>
+            <div class="container">
+                  <?php
+                    if($cursor->isDead()) {
+                      echo '<i id="meanings_empty">Daha önce hiçkimse bu kelime için tavsiye vermedi.</i>';
+                    } else {
+                      foreach($cursor as $item) {
+                        createSuggestionBubble($item["_id"], $item["word"], $item["_id"] == $alreadyVoted["_id"]); 
+                      }
+                    }
+                  ?>
+                <hr />
+            </div>
             <?php } ?>
         </div>
     </article>
