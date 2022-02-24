@@ -1,6 +1,6 @@
 <div>
   <img alt="project: developing" src="https://img.shields.io/badge/project-developing-success"/>
-  <img alt="technology: php" src="https://img.shields.io/badge/technology-php"/>
+  <img alt="technology: php" src="https://img.shields.io/badge/technology-php-success"/>
   <a href="https://github.com/oSoloTurk/Dogrusu/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/oSoloTurk/Dogrusu"></a>
   <a href="https://github.com/oSoloTurk/Dogrusu/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/oSoloTurk/Dogrusu"></a>
   <a href="https://sakarya.edu.tr"><img alt="university: Sakarya University" src="https://img.shields.io/badge/university-sakarya%20university-blue"/></a>
