@@ -4,7 +4,7 @@
 
   require_once("utils/gravatar.php");
   function createListElement($rank, $name, $profileUrl, $mail, $point) {
-    echo '<a class="pretty" href="'.$profileUrl.'">';
+    echo '<a class="pretty" <!--href="'.$profileUrl.'"--> ';
     echo '  <li class="clickeable list-group-item row d-flex" id="rank-'.$rank.'">';
     echo '      <span class="col-4">#'.$rank.'';
     echo '          <img src="'.get_gravatar($mail, 128).'" alt="Avatar" class="avatar" width="30%" height="100%" title="Gravatar tarafından sağlanmaktadır.">';
@@ -82,7 +82,7 @@
   require_once("header.php");
   ?>
     <?php
-    $currentPage = $_GET["page"] ?? 1;
+    $currentPage = max($_GET["page"] ?? 1, 1);
     $cursor = $db->leaderboard->find([], ["limit" => ($currentPage - 1) * 20, "take" => $currentPage * 20]);
     $maxPage = (int)(1 + $db->leaderboard->count() / 20);
 
