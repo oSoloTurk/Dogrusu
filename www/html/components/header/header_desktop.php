@@ -19,9 +19,9 @@ if(isset($_SESSION['user'])) {
                 <li class="nav-item mt-4" id="leaderboard">
                     <a class="nav-link" href="leaderboard.php">Liderlik Tablosu</a>
                 </li>
-                <li class="nav-item mt-4" id="profile">
+                <!--<li class="nav-item mt-4" id="profile">
                     <a class="nav-link" href="profile.php">Profil</a>
-                </li>
+                </li>-->
                 <li class="nav-item mt-4">
                     <a class="nav-link" href="logout.php">Çıkış Yap</a>
                 </li>
