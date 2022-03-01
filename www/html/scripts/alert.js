@@ -108,6 +108,13 @@ if(params["msg"] != null){
                 icon: "warning",
             });   
             break;
+        case "permission-denied":
+            swal({
+                title: "Oops",
+                text: "Sanırım yanlış çekmeceleri karıştırıyorsun, doğru alana yönlendiriliyorsun.",
+                icon: "warning",
+            });   
+            break;
     }
     removeParam("msg");
 }
