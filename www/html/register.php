@@ -16,41 +16,38 @@ requiredLogin(false);
 </head>
 
 <body>
-    <?php 
-        require_once("header.php");
+    <?php
+    require_once("header.php");
 
-        require_once("models/User.php");
-        if (isset($_POST['register'])) {
+    require_once("models/User.php");
+    if (isset($_POST['register'])) {
 
-            $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
-            $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
-            
-            $user = new User($_POST);
+        $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
+        $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
 
-            $user->password_hash = $pwd;
-            $user->normalized_email = strtoupper($_POST["email"]);
-            $user->normalized_username = strtoupper($_POST["username"]);
-            $user->email_status = 0;
-            
-            $userAsJson = $user->toJSON();
+        $user = new User($_POST);
 
-            $alreadyExist = $db->users->findOne($user->toJSONAsIdentitiy()); 
-            
-            if($alreadyExist == null ){
-                $data = $db->users->insertOne($userAsJson);
-                sendToPage("login.php?msg=success-registered");
-            } else {
-                sendToPage("register.php?msg=already-registered");
-            }
-        } 
-  ?>
+        $user->password_hash = $pwd;
+        $user->normalized_email = strtoupper($_POST["email"]);
+        $user->normalized_username = strtoupper($_POST["username"]);
+        $user->email_status = 0;
+
+        $alreadyExist = $db->users->findOne($user->toJSONAsIdentitiy(false));
+
+        if ($alreadyExist == null) {
+            $data = $db->users->insertOne($user->toJSON(false));
+            sendToPage("login.php?msg=success-registered");
+        } else {
+            sendToPage("register.php?msg=already-registered");
+        }
+    }
+    ?>
 
     <article>
-        <div class="container-md row">
-            <div class="col-md-4"></div>
-            <div class="col-md-6">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
                 <div class="mt-5 border">
-                    <div>
+                    <div class="m-2">
                         <center>Kayıt Ol</center>
                     </div>
                     <form method="post">
@@ -60,7 +57,7 @@ requiredLogin(false);
                                 <input class="form-control" type="text" name="username" id="username">
                             </div>
                             <div class="mt-3">
-                                
+
                                 <label class="form-label" for="email">E-Postan</label>
                                 <input class="form-control" type="email" id="email" pattern=".+@gmail\.com" name="email">
                             </div>
@@ -99,7 +96,6 @@ requiredLogin(false);
                     </form>
                 </div>
             </div>
-            <div class="col-md-2"></div>
         </div>
     </article>
 
