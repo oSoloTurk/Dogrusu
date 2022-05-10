@@ -21,7 +21,6 @@ requiredLogin(false);
     require_once("header.php");
 
     require_once("models/User.php");
-
     if (isset($_POST['login'])) {
         $mail = htmlspecialchars($_POST['email'], ENT_QUOTES, 'utf-8');
         $pwd = hash('sha256', htmlspecialchars($_POST['password'], ENT_QUOTES, 'utf-8'));
@@ -32,7 +31,7 @@ requiredLogin(false);
 
         if ($result != null) {
             $user = new User($result, true);
-            sendToPage("index.php?msg=logged");
+            sendToPage("suggestions.php?msg=logged");
         } else {
             sendToPage("login.php?msg=wrong_input");
         }
