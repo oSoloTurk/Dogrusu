@@ -136,7 +136,9 @@
       $cursor = $db->suggestions->find(
         ["root" => $word->normalized_word, "status" => 1]
       );
-  ?>
+
+      sendToPage("vote.php?id=" . $_GET["id"] . "&msg=sended-verify");
+      ?>
     <article>
         <div class="container">
             <div class="text-center"><i>Karşılık aranan kelime: <span
