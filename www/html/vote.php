@@ -91,7 +91,7 @@
           $customSuggestion = new Suggestion(
             ["word" => $customVote,
              "normalized_word" => strtoupper($customVote),
-             "status" => 0,
+             "status" => 1, //for the only demo, if you using on prod then change this with 0
              "suggester" => $_SESSION["user"]["_id"],
              "root" => $word->normalized_word
             ]);

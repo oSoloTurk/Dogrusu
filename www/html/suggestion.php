@@ -29,7 +29,7 @@ requiredLogin(true);
     $suggestion = new Suggestion($_POST);
     $suggestion->normalized_word = strtoupper($_POST["word"]);
     $suggestion->suggester = $_SESSION['user']->userId;
-    $suggestion->status = 0;
+    $suggestion->status = 1; //for the only demo, if you using on prod then change this with 0
     $suggestion->time = current_time()->format('Y-m-d H:i:s');
 
     if($db->suggestions->findOne($suggestion->toJSONAsIdentity()) == null) {
