@@ -37,7 +37,8 @@ requiredLogin(false);
           Biz Kimiz?
         </h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc volutpat urna nec justo vestibulum lobortis. Donec et libero scelerisque, sollicitudin est in, condimentum quam. Mauris vulputate nisl dictum enim gravida. Suspendisse scelerisque convallis diam, in finibus sapien semper sodales. Mauris quis est vel elit rhoncus varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam vel sodales neque.
+          Bizler, Türkçe'nin günümüz dinamizinde asimile olmaması için çaba gösteren ve bunu kâr amacı gütmeden yapan gönüllü kişileriz.<br>
+          <span class="text-white bg-dark">Dogrusu.org</span> olarak amacımız bu süreci aramızdaki bir oyun haline getirmek ve eğlenmek!
         </p>
       </div>
       <div class="text-block text-right">
@@ -45,7 +46,8 @@ requiredLogin(false);
           Amacımız
         </h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc volutpat urna nec justo vestibulum lobortis. Donec et libero scelerisque, sollicitudin est in, condimentum quam. Mauris vulputate nisl dictum enim gravida. Suspendisse scelerisque convallis diam, in finibus sapien semper sodales. Mauris quis est vel elit rhoncus varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam vel sodales neque..
+          Türkçenin yazılı ve sözlü kaynakları üzerine bilime dayalı araştırmalar yapmak; Türkçenin bilim, sanat, edebiyat ve öğretim dili olarak  gelişmesini ve her alanda doğru  kullanılmasını sağlamaktır.        
+          Türk dilinin zenginliğini meydana çıkarıp onu yeryüzü dilleri arasında değerine yaraşır yüksekliğe eriştirmek ve Türk dünyasında ortak anlaşma dili, dünyada ise yaygın ve geçerli bir dil konumuna getirmektir.
         </p>
       </div>
       <div class="text-block text-left">
@@ -53,7 +55,9 @@ requiredLogin(false);
           Aramıza Katıl!
         </h2>
         <p>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc volutpat urna nec justo vestibulum lobortis. Donec et libero scelerisque, sollicitudin est in, condimentum quam. Mauris vulputate nisl dictum enim gravida. Suspendisse scelerisque convallis diam, in finibus sapien semper sodales. Mauris quis est vel elit rhoncus varius. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Etiam vel sodales neque..
+          <span class="text-white bg-dark">Dogrusu.org</span> tamamen açık kaynaklı olarak geliştirildi ve yönetiliyor.<br>
+          Bunun anlami ise şöyle; istersen aramıza bir yazılımcı olarak, istersen bir yönetici olarak veya kelimeler öneren bir üye olarak katılabilirsin! <br>
+          Sana İhtiyacımız Var!
         </p>
       </div>
     </div>
