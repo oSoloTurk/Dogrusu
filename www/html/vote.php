@@ -138,7 +138,7 @@
         ["root" => $word->normalized_word, "status" => 1]
       );
 
-      sendToPage("vote.php?id=" . $_GET["id"] . "&msg=sended-verify");
+      //sendToPage("vote.php?id=" . $_GET["id"] . "&msg=sended-verify");
       ?>
     <article>
         <div class="container">
